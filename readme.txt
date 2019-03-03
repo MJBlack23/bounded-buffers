@@ -15,3 +15,6 @@ https://pubs.opengroup.org/onlinepubs/7908799/xsh/pthread.h.html
 Initializing the semaphores
 https://www.geeksforgeeks.org/use-posix-semaphores-c/
 https://pubs.opengroup.org/onlinepubs/7908799/xsh/semaphore.h.html
+
+Fetch the error number
+http://pubs.opengroup.org/onlinepubs/9699919799/functions/strerror.html

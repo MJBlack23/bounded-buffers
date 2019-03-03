@@ -4,6 +4,7 @@
 
 #include "src/input.h"
 #include "src/helpers.h"
+#include "src/buffer.h"
 
 int main(int argc, char *argv[]) {
     /**

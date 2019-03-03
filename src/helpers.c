@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <time.h>
 
+#include "buffer.h"
+
 static time_t t;
 
 void initRNG() {
@@ -9,7 +11,7 @@ void initRNG() {
 }
 
 // random number generator
-int randomNumber(int max) {
+buffer_item randomNumber(int max) {
     if (max < 0) {
         return (rand() % RAND_MAX);
     } else {

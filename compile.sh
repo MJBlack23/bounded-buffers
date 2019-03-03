@@ -1,3 +1,8 @@
 #!/bin/bash
 
-gcc main.c src/input.c src/helpers.c src/buffer.c src/output.c -lpthread -lrt
+gcc -o prod_con main.c \
+    src/buffer.c \
+    src/helpers.c \
+    src/input.c \
+    src/output.c \
+    -lpthread

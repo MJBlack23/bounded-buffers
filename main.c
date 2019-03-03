@@ -2,9 +2,16 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include "src/input.h"
-#include "src/helpers.h"
+#include <pthread.h>
+#include <errno.h>
+
 #include "src/buffer.h"
+#include "src/helpers.h"
+#include "src/input.h"
+#include "src/output.h"
+
+void *producer(void *params);
+void *consumer(void *params);
 
 int main(int argc, char *argv[]) {
     /**
@@ -17,64 +24,94 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
+    // Print the welcome message
+    print_welcome();
+
     // Initialize the random number generator
     initRNG();
 
+    // Initialize the buffer
+    init_buffer();
+    print_time();
+    printf("Buffer initialization Complete.\n");
 
-    
-    sleep(sleepTimeout);
+    int i;
+    // Initialize the producer threads
+    for (i = 1; i <= producer_count; i++) {
+        pthread_t tid;
+        pthread_attr_t attr;
+        if (pthread_attr_init(&attr) == -1) {
+            fatal("Failed to initialize attributes for a producer thread...", errno);
+        }
+
+        if (pthread_create(&tid, &attr, producer, NULL) == -1) {
+            fatal("Failed to create a thread for a producer...", errno);
+        }
+    }
+
+    int c;
+    // Initialize the consumer threads
+    for (c = 1; c <= consumer_count; c++) {
+        pthread_t tid;
+        pthread_attr_t attr;
+        if (pthread_attr_init(&attr) == -1) {
+            fatal("Failed to initialize attributes for a consumer thread...", errno);
+        }
+
+        if (pthread_create(&tid, &attr, consumer, NULL) == -1) {
+            fatal("Failed to create a thread for a consumer...", errno);
+        }
+    }
+
+
+    // Sleep for the designated time
+    sleep(sleep_timeout);
     return 0;
 }
 
 
 
-void *producer(void) {
-    int n;
-    int shouldSleep = 0;
+void *producer(void *param) {
+    buffer_item n;
+    int should_sleep = 0;
     
     do {
-        if (shouldSleep) {
-            sleep(randomNumber(3));
+        if (should_sleep) {
+            // Sleep for 1 - 3 seconds
+            sleep(randomNumber(5));
 
             // update the boolean to work next cycle
-            shouldSleep = 0;
+            should_sleep = 0;
         } else {
             // produce an integer
-            n = randomNumber(100);
+            n = randomNumber(-1);
 
-            // declare a wait on the empty semaphore
-            // acquire the mutex lock
+            insert_item(n);
 
-            // add n to the buffer
-
-            // release the mutex lock
-            // signal: increment the full semaphore
-
-            // Update the boolean to sleep next cycle
-            shouldSleep = 1;
+            should_sleep = 1;
         }
         
     } while (1);
 }
 
-void *consumer(void) {
-    int shouldSleep = 1;
+
+void *consumer(void *param) {
+    buffer_item n;
+    int should_sleep = 1;
 
     do {
-        if (shouldSleep) {
-            sleep(randomNumber(3));
+        if (should_sleep) {
+            // Sleep for 1 - 3 seconds
+            sleep(randomNumber(5));
 
-            shouldSleep = 0;
+            // update shouldSleep to false
+            should_sleep = 0;
         } else {
-            // declare a wait on the full semaphore
-            // acquire the mutex lock
+            // Retrieve an item from the buffer
+            n = remove_item();
 
-            // remove an item from a buffer
-
-            // release the mutex lock
-            // signal: increment the empty semaphore
-
-            // print the random int
+            // update shouldSleep to true
+            should_sleep = 1;
         }
     } while (1);
 }

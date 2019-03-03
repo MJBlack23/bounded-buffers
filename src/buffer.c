@@ -7,7 +7,7 @@
 #include "buffer.h"
 
 typedef struct Buffers {
-    int buffer[BUFFER_SIZE];
+    buffer_item buffer[BUFFER_SIZE];
     pthread_mutex_t mutex;
     sem_t full;
     sem_t empty;
@@ -57,7 +57,8 @@ void insert_item(buffer_item n) {
     sem_getvalue(&(buffer.full), &insert_at);
 
     // log what is happening
-    printf("Inserting n %d at location %d\n", n, insert_at);
+    print_time();
+    printf("Inserting %d at location %d\n", n, insert_at);
 
     // insert the number at the next location
     buffer.buffer[insert_at] = n;
@@ -92,7 +93,8 @@ buffer_item remove_item() {
     n = buffer.buffer[remove_at];
 
     // log what is happening
-    printf("Removing n %d at location %d\n", n, remove_at);
+    print_time();
+    printf("Removing  %d at location %d\n", n, remove_at);
 
     if (pthread_mutex_unlock(&(buffer.mutex)) == -1) {
         fatal("Failed to unlock the muxtex...", errno);

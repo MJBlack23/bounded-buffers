@@ -18,3 +18,6 @@ https://pubs.opengroup.org/onlinepubs/7908799/xsh/semaphore.h.html
 
 Fetch the error number
 http://pubs.opengroup.org/onlinepubs/9699919799/functions/strerror.html
+
+Manipulating time in c
+https://www.tutorialspoint.com/c_standard_library/time_h.htm

@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-extern int sleepTimeout;
-extern int producerCount;
-extern int consumerCount;
+extern int sleep_timeout;
+extern int producer_count;
+extern int consumer_count;
 
 int verifyArgs(int argc, char *argv[]) {
     if (argc != 4) {
@@ -23,9 +23,9 @@ int verifyArgs(int argc, char *argv[]) {
     }
 
     // Explicitly set args for readability
-    sleepTimeout = atoi(argv[1]);
-    producerCount = atoi(argv[2]);
-    consumerCount = atoi(argv[3]);
+    sleep_timeout = atoi(argv[1]);
+    producer_count = atoi(argv[2]);
+    consumer_count = atoi(argv[3]);
 
     return 0;
 }

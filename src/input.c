@@ -6,6 +6,8 @@ extern int sleep_timeout;
 extern int producer_count;
 extern int consumer_count;
 
+// Verify the arguments are what is expected
+// If not, print the usage
 int verifyArgs(int argc, char *argv[]) {
     if (argc != 4) {
         fprintf(stderr, "Usage a.out <timeout> <# producers> <# consumers>.\n");

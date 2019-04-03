@@ -11,12 +11,14 @@ void print_welcome() {
     printf("\n\n");
 }
 
+// helper to print an error message and exit
 void fatal(char message[], int err) {
     printf("%s\n", message);
     printf("Error Number: %d => %s\n", err, strerror(err));
     exit(1);
 }
 
+// Helper to normalize the time to a two digit number
 void pad_zero(int num, char *str) {
     if (num < 10) {
         sprintf(str, "0%d", num);
@@ -25,6 +27,7 @@ void pad_zero(int num, char *str) {
     }
 }
 
+// gets the current time and prints it in an easy to read manner
 void print_time() {
     time_t rawtime;
     struct tm *timeinfo;
